@@ -221,5 +221,67 @@ namespace FH
                 return false;
             }
         }
+        //Write a new LectureAttendance
+        public bool Write(LectureAttendance obj)
+        {
+            try
+            {
+                List<LectureAttendance> lectureAttendances;
+                Read(out lectureAttendances);
+                lectureAttendances.Add(obj);
+                FileStream fs = new FileStream(atfname, FileMode.Create, FileAccess.Write);
+                JsonSerializer.Serialize(fs, lectureAttendances);
+
+                fs.Close();
+                return true;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                return false;
+            }
+        }
+        // Read LectureAttendance
+        public bool Read(out List<LectureAttendance> lectureAttendances)
+        {
+
+            FileStream fs = new FileStream(atfname, FileMode.OpenOrCreate, FileAccess.Read);
+            bool st = true;
+            try
+            {
+                lectureAttendances = JsonSerializer.Deserialize<List<LectureAttendance>>(fs) ?? new List<LectureAttendance>();
+            }
+            catch
+            {
+                lectureAttendances = new List<LectureAttendance>();
+                st = false;
+            }
+            finally
+            {
+                fs.Close();
+            }
+            return st;
+        }
+        // Update LectureAttendance
+        public bool Update(LectureAttendance obj)
+        {
+            try
+            {
+                List<LectureAttendance> lectureAttendances;
+                Read(out lectureAttendances);
+                lectureAttendances.RemoveAll(c => c == obj);
+                lectureAttendances.Add(obj);
+                FileStream fs = new FileStream(atfname, FileMode.Create, FileAccess.Write);
+                JsonSerializer.Serialize(fs, lectureAttendances);
+
+                fs.Close();
+                return true;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                return false;
+            }
+        }
     }
 }

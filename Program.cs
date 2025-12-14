@@ -49,15 +49,22 @@ class LectureAttendance
     {
         return la1.GetHashCode() == la2.GetHashCode();
     }
+    public void addStudent(string studentID)
+    {
+        students.Add(studentID);
+    }
+    public void removeStudent(string studentID) {
+        students.Remove(studentID);
+    }
 }
 class Controller { }
 class Model { }
 class View
 {
+    const string clearConsole = "\x1b[2J\x1b[H";
     public static void Main()
     {
-        //FileHandler fh = new FileHandler("students.json", "faculties.json", "cards.json", "transactions.json", "attendance.json");
-        LectureAttendance la = new LectureAttendance(12, 5, 2024, "CS101");
-        Console.WriteLine(la.GetHashCode());
+        FileHandler fh = new FileHandler("students.json", "faculties.json", "cards.json", "transactions.json", "attendance.json");
+
     }
 }

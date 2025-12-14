@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text.Json;
 using System.IO;
-
+using Constants;
 namespace FH
 {
     class FileHandler
@@ -22,18 +22,30 @@ namespace FH
             if (File.Exists(stfname) == false)
             {
                 File.Create(stfname).Close();
+                File.WriteAllText(stfname, FileStartups.studentStartup);
             }
             if (File.Exists(fafname) == false)
             {
                 File.Create(fafname).Close();
+                File.WriteAllText(fafname, FileStartups.facultyStartup);
+
             }
             if (File.Exists(trfname) == false)
             {
                 File.Create(trfname).Close();
+                File.WriteAllText(trfname, "[]");
+
             }
             if (File.Exists(cafname) == false)
             {
                 File.Create(cafname).Close();
+                File.WriteAllText(cafname, FileStartups.cardStartup);
+
+            }
+            if (File.Exists(atfname) == false)
+            {
+                File.Create(atfname).Close();
+                File.WriteAllText(atfname, "[]");
             }
         }
         //stundet Write

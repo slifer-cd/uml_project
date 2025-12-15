@@ -3,68 +3,43 @@ using System.IO;
 using System.Text.Json;
 using System.Collections.Generic;
 using FH;
-using System.Diagnostics.CodeAnalysis;
-using System.Security.Cryptography;
-class Student { }
-class Faculty { }
-class Card
+using DataImplementation;
+class Controller
 {
-    public string UserID { get; set; }
-    public bool active { get; set; }
-    public void swap()
+    // start, admin, cardholder_login, student_menu, faculty_menu, issue_card, block_card,unblock_card, admin_data_view, 
+    private string position;
+    private int position_step = 0;
+    private string input_buffer = "";
+    public Controller()
     {
-        active = !active;
+        this.position = "start";
+    }
+    public string next(string input)
+    {
+        return Model.GetData(this.position);
     }
 }
-class Transaction { }
+class Model
+{
+    public static string lastOutputData = "";
+    public static readonly string clearConsole = "\x1b[2J\x1b[H";
 
-class LectureAttendance
-{
-    private int day, mounth, year;
-    private string courseID;
-    private List<string> students = new List<string>();
-    public LectureAttendance(int day, int mounth, int year, string courseID)
+    public static string GetData(string position)
     {
-        this.day = day;
-        this.mounth = mounth;
-        this.year = year;
-        this.courseID = courseID;
-    }
-    public override int GetHashCode()
-    {
-        string m = mounth < 10 ? $"0{mounth}" : mounth.ToString();
-        string date = $"{day}{m}{year}";
-        int hash = Convert.ToInt32(date);
-        foreach (char c in courseID)
+        if (position == "start")
         {
-            hash += (int)c;
+            lastOutputData = mainScreen;
+            return clearConsole + mainScreen;
         }
-        return hash;
+        return "";
     }
-    public static bool operator ==(LectureAttendance la1, LectureAttendance la2)
-    {
-        return la1.GetHashCode() == la2.GetHashCode();
-    }
-    public static bool operator !=(LectureAttendance la1, LectureAttendance la2)
-    {
-        return la1.GetHashCode() == la2.GetHashCode();
-    }
-    public void addStudent(string studentID)
-    {
-        students.Add(studentID);
-    }
-    public void removeStudent(string studentID) {
-        students.Remove(studentID);
-    }
+    private static string mainScreen = "[1] Login As Admin\n[2] Login As Card Holder\n[3] Exit\n\nEnter your choice: ";
 }
-class Controller { }
-class Model { }
 class View
 {
-    const string clearConsole = "\x1b[2J\x1b[H";
     public static void Main()
     {
-        FileHandler fh = new FileHandler("students.json", "faculties.json", "cards.json", "transactions.json", "attendance.json");
-
+        Controller controller = new Controller();
+        Console.Write(controller.next(""));
     }
 }
